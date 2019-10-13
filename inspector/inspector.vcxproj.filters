@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="hermes/inspector/chrome\tests\AsyncHermesRuntime.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\AutoAttachUtils.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\Connection.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\ConnectionDemux.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/inspector.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/InspectorState.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\MessageConverters.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\cli\main.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/RuntimeAdapter.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\RemoteObjectsTable.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\Registration.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/detail\SerialExecutor.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\tests\SyncConnection.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/detail\Thread.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hermes/inspector/chrome\MessageTypes.cpp">
+      <Filter>hermes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="jsinspector\InspectorInterfaces.cpp">
+      <Filter>jsinspector</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hermes/inspector/chrome\tests\AsyncHermesRuntime.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/AsyncPauseState.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\AutoAttachUtils.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\Connection.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\ConnectionDemux.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/Exceptions.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/framework.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/Inspector.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/InspectorState.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\MessageConverters.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\MessageInterfaces.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\MessageTypes.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\MessageTypesInlines.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\Registration.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\RemoteObjectsTable.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/RuntimeAdapter.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/detail\SerialExecutor.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/chrome\tests\SyncConnection.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hermes/inspector/detail\Thread.h">
+      <Filter>hermes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jsinspector\InspectorInterfaces.h">
+      <Filter>jsinspector</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="hermes">
+      <UniqueIdentifier>{667d34b3-c0c7-481b-878d-1e77bb7a58bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hermes\Source Files">
+      <UniqueIdentifier>{8545b733-c68d-4f65-8f01-1c35d0dcb20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hermes\Header Files">
+      <UniqueIdentifier>{1a8d653c-66fd-46d0-a249-a4fffa916008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jsinspector">
+      <UniqueIdentifier>{b0c5d4fc-412f-4482-bbc7-0fbdf2979a50}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
