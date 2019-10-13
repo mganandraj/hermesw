@@ -16,10 +16,16 @@
     <Filter Include="jsi">
       <UniqueIdentifier>{ffebd29d-508b-45e2-ae07-e3c6ebad48fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="transport">
+      <UniqueIdentifier>{1188a54a-a25e-4951-afed-ada8e09317fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="hermesw.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="transport\ws_session.cpp">
+      <Filter>transport</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +34,9 @@
     </ClInclude>
     <ClInclude Include="hermesw.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="transport\ws_session.h">
+      <Filter>transport</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

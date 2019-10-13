@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\github\hermes_latest_static\hermes\API\hermes;D:\github\hermes_latest_static\hermes\API\jsi;.;D:\github\hermes_latest_static\hermes\public;$(IncludePath)</IncludePath>
+    <IncludePath>D:\github\hermes_latest_static\hermes\API\;D:\github\hermes_latest_static\hermes\API\hermes;D:\github\hermes_latest_static\hermes\API\jsi;.;D:\github\hermes_latest_static\hermes\public;..\inspector;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -107,9 +107,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;HERMES_RELEASE_VERSION=\"0.2.1\";HERMESVM_GC_NONCONTIG_GENERATIONAL;HERMESVM_ALLOW_COMPRESSED_POINTERS;HERMES_SLOW_DEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;USE_WIN10_ICU;HERMES_ENABLE_DEBUGGER;CMAKE_INTDIR=\"Debug\";libhermes_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -158,10 +156,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="hermesw.cpp" />
+    <ClCompile Include="transport\ws_session.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hermesw.h" />
     <ClInclude Include="jsi\ScriptStore.h" />
+    <ClInclude Include="transport\ws_session.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\inspector\inspector.vcxproj">
+      <Project>{587c5780-9d3f-490d-acbe-516e5357a879}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,17 +1,19 @@
-// test.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// test.cpp : This file contains the 'main' function. Program execution begins
+// and ends there.
 //
 
 #include "pch.h"
 #include <iostream>
 
-#include "hermesw/hermesw.h"
 #include "BaseScriptStoreImpl.h"
+#include "hermesw/hermesw.h"
 
 using namespace facebook;
 
 class StringBuffer : public jsi::Buffer {
  public:
-  static std::shared_ptr<const jsi::Buffer> bufferFromString(std::string&& str) {
+  static std::shared_ptr<const jsi::Buffer> bufferFromString(
+      std::string &&str) {
     return std::make_shared<StringBuffer>(std::move(str));
   }
 
@@ -27,8 +29,10 @@ class StringBuffer : public jsi::Buffer {
   std::string str_;
 };
 
-
 int main() {
+  /*const char *path = "D:\\fibonacci.js";
+  std::string scriptSource = readScriptSource(path);*/
+
   std::string hbc_path = "D:\\hbc\\";
 
   std::unique_ptr<facebook::jsi::Runtime> runtime =
@@ -36,9 +40,11 @@ int main() {
           std::make_unique<facebook::react::BasePreparedScriptStoreImpl>(
               hbc_path));
 
+  std::unique_ptr<facebook::jsi::Runtime> runtime_d = makeDebugHermesRuntime();
+
   std::string js = "print('hello')";
   std::string url = "test.js";
 
-  runtime->evaluateJavaScript(StringBuffer::bufferFromString(std::move(js)), url);
-  
+  runtime_d->evaluateJavaScript(
+      StringBuffer::bufferFromString(std::move(js)), url);
 }

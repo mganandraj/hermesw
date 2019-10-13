@@ -3,12 +3,18 @@
 //
 
 #include <iostream>
+#include <thread>
 
 #include <jsi/ScriptStore.h>
 #include <jsi/decorator.h>
 
 #include <CompileJS.h>
 #include <hermes.h>
+
+#include <hermes/inspector/RuntimeAdapter.h>
+#include <hermes/inspector/chrome/Connection.h>
+
+#include "transport/ws_session.h"
 
 using namespace facebook;
 
@@ -31,19 +37,121 @@ class StringBuffer : public jsi::Buffer {
   std::string str_;
 };
 
+class RemoteConnection : public facebook::react::IRemoteConnection {
+ public:
+  std::shared_ptr<web_socket_session_interface> ws_connection_;
+
+  RemoteConnection(std::shared_ptr<web_socket_session_interface> ws_connection)
+      : ws_connection_(ws_connection) {}
+
+  void onMessage(std::string message) override {
+    // sendResponse(message);
+    ws_connection_->write(message);
+  }
+
+  void onDisconnect() override {}
+};
+
+static bool handleScriptSourceRequest(
+    const std::string &reqStr,/*,
+    const std::string &scriptSource,*/
+    web_socket_session_interface& ws_connection) {
+  auto req = folly::parseJson(reqStr);
+
+  if (req.at("method") == "Debugger.getScriptSource") {
+    /*folly::dynamic result = folly::dynamic::object;
+    result["scriptSource"] = scriptSource;
+
+    folly::dynamic resp = folly::dynamic::object;
+    resp["id"] = req.at("id");
+    resp["result"] = std::move(result);*/
+
+	ws_connection.write("test javascript");
+
+    // sendResponse(folly::toJson(resp));
+
+    return true;
+  }
+
+  return false;
+}
+
+static void runDebuggerLoop_ws(
+    facebook::hermes::inspector::chrome::Connection &conn/*,
+    std::string scriptSource*/) {
+  create_web_socket_server(
+      8888,
+      [&conn/*, &scriptSource*/](
+          std::shared_ptr<web_socket_session_interface> ws_connection) {
+        conn.connect(std::make_unique<RemoteConnection>(ws_connection));
+
+        ws_connection->setOnRead(
+            [&conn/*, &scriptSource*/, ws_connection](std::string line) {
+          std::cout << "<< do_server :: Read Handler >> :: " << line
+                    << std::endl;
+
+          // logRequest(line);
+
+          if (!handleScriptSourceRequest(line, /*scriptSource, */*ws_connection)) {
+            conn.sendMessage(line);
+          }
+        });
+      });
+}
+
+class DebugHermesRuntime : public facebook::jsi::RuntimeDecorator<
+                               facebook::hermes::HermesRuntime,
+                               facebook::jsi::Runtime> {
+ public:
+  DebugHermesRuntime(
+      std::unique_ptr<facebook::hermes::HermesRuntime> base)
+      : facebook::jsi::RuntimeDecorator<
+            facebook::hermes::HermesRuntime,
+            facebook::jsi::Runtime>(*base),
+        base_(std::move(base)) {
+  
+	auto adapter =
+        std::make_unique<facebook::hermes::inspector::SharedRuntimeAdapter>(
+            base_);
+
+    facebook::hermes::inspector::chrome::Connection conn(
+        std::move(adapter), "hermes-chrome-debug-server");
+
+    debugger_thread_ = std::thread (
+        runDebuggerLoop_ws, std::ref(conn));
+  }
+
+  jsi::Value evaluateJavaScript(
+      const std::shared_ptr<const jsi::Buffer> &source,
+      const std::string &sourceURL) override {
+    facebook::hermes::HermesRuntime::DebugFlags flags;
+    std::string source_str(
+        reinterpret_cast<const char *>(source->data()), source->size());
+
+    base_->debugJavaScript(source_str, sourceURL, flags);
+
+	return jsi::Value::undefined();
+  }
+
+ private:
+  std::shared_ptr<facebook::hermes::HermesRuntime> base_;
+  std::thread debugger_thread_;
+};
+
 // Note:: Unfortunately, we can't override from the concrete implementation
 // which is HermesRuntimeImpl, which has perf implications due to multiple
 // virtual pointer chases!
 class DynamicPreparedScriptHermesRuntime
-    : public facebook::jsi::
-          RuntimeDecorator<facebook::jsi::Runtime, facebook::jsi::Runtime> {
+    : public facebook::jsi::RuntimeDecorator<
+          facebook::hermes::HermesRuntime,
+          facebook::jsi::Runtime> {
  public:
   DynamicPreparedScriptHermesRuntime(
       std::unique_ptr<facebook::hermes::HermesRuntime> base,
       std::unique_ptr<facebook::jsi::PreparedScriptStore> prepared_script_store)
-      : facebook::jsi::
-            RuntimeDecorator<facebook::jsi::Runtime, facebook::jsi::Runtime>(
-                *base),
+      : facebook::jsi::RuntimeDecorator<
+            facebook::hermes::HermesRuntime,
+            facebook::jsi::Runtime>(*base),
         base_(std::move(base)),
         prepared_script_store_(std::move(prepared_script_store)) {}
 
@@ -84,7 +192,7 @@ class DynamicPreparedScriptHermesRuntime
       return base_->evaluateJavaScript(hbc_buffer, sourceURL);
     } else {
       return base_->evaluateJavaScript(source, sourceURL);
-	}
+    }
   }
 
  private:
@@ -98,4 +206,10 @@ __declspec(dllexport) std::
             prepared_script_store) {
   return std::make_unique<DynamicPreparedScriptHermesRuntime>(
       facebook::hermes::makeHermesRuntime(), std::move(prepared_script_store));
+}
+
+__declspec(dllexport)
+    std::unique_ptr<facebook::jsi::Runtime> makeDebugHermesRuntime() {
+  return std::make_unique<DebugHermesRuntime>(
+      facebook::hermes::makeHermesRuntime());
 }
