@@ -98,7 +98,8 @@ class Connection::Impl : public inspector::InspectorObserver,
 
   // connected_ is protected by connectionMutex_.
   std::mutex connectionMutex_;
-  bool connected_;
+  //WINFIX
+  bool connected_{false};
 
   // parsedScripts_ list stores file names of all scripts that have been
   // parsed so that we could find script's file name by regex.

@@ -29,22 +29,35 @@ class StringBuffer : public jsi::Buffer {
   std::string str_;
 };
 
+static std::string readScriptSource(const char *path) {
+  std::ifstream stream(path);
+  return std::string{std::istreambuf_iterator<char>(stream),
+                     std::istreambuf_iterator<char>()};
+}
+
 int main() {
-  /*const char *path = "D:\\fibonacci.js";
-  std::string scriptSource = readScriptSource(path);*/
+  const char *path = "D:\\fibonacci.js";
+  std::string scriptSource = readScriptSource(path);
+  std::string scriptSource2 = scriptSource;
 
   std::string hbc_path = "D:\\hbc\\";
 
-  std::unique_ptr<facebook::jsi::Runtime> runtime =
+  /*std::unique_ptr<facebook::jsi::Runtime> runtime =
       makeDynamicPreparedScriptHermesRuntime(
           std::make_unique<facebook::react::BasePreparedScriptStoreImpl>(
-              hbc_path));
+              hbc_path));*/
 
   std::unique_ptr<facebook::jsi::Runtime> runtime_d = makeDebugHermesRuntime();
 
-  std::string js = "print('hello')";
+  // std::string js = "debugger;print('bingo')";
   std::string url = "test.js";
+  std::string url2 = "test2.js";
 
   runtime_d->evaluateJavaScript(
-      StringBuffer::bufferFromString(std::move(js)), url);
+      StringBuffer::bufferFromString(std::move(scriptSource)), url);
+
+  runtime_d->evaluateJavaScript(
+      StringBuffer::bufferFromString(std::move(scriptSource2)), url2);
+
+  getchar();
 }
